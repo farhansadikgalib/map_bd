@@ -304,6 +304,8 @@ class BangladeshMapPainter extends CustomPainter {
         _drawDhakaDetailedMap(canvas, size);
       } else if (selectedDivision == 'Rangpur') {
         _drawRangpurDetailedMap(canvas, size);
+      } else if (selectedDivision == 'Rajshahi') {
+        _drawRajshahiDetailedMap(canvas, size);
       } else {
         // Save canvas state
         canvas.save();
@@ -636,6 +638,104 @@ class BangladeshMapPainter extends CustomPainter {
     rangpurPainter.paint(canvas, Size(mapWidth, mapHeight));
   }
 
+  void _drawRajshahiDetailedMap(Canvas canvas, Size size) {
+    // Calculate scaling to fit the map in the available space
+    final mapWidth = 300.0;
+    final mapHeight = 400.0;
+    final scaleX = size.width / mapWidth;
+    final scaleY = size.height / mapHeight;
+    final scale = math.min(scaleX, scaleY) * 0.9;
+
+    // Center the map
+    final scaledWidth = mapWidth * scale;
+    final scaledHeight = mapHeight * scale;
+    final centerX = (size.width - scaledWidth) / 2;
+    final centerY = (size.height - scaledHeight) / 2;
+
+    // Save canvas state
+    canvas.save();
+
+    // Translate to center
+    canvas.translate(centerX, centerY);
+
+    // Scale the map
+    canvas.scale(scale);
+
+    // Draw background
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, mapWidth, mapHeight),
+      Paint()..color = Colors.white,
+    );
+
+    // Draw the actual Rajshahi division shape as background
+    canvas.save();
+    canvas.translate(15, 40); // Position the division shape
+    _drawRajshahiDivisionShape(canvas, mapWidth - 30, mapHeight - 55);
+    canvas.restore();
+
+    // Draw districts for Rajshahi
+    _drawDistrict(
+      canvas,
+      'Joypurhat',
+      160,
+      50,
+      80,
+      60,
+      districtData?['Joypurhat'],
+    );
+    _drawDistrict(canvas, 'Naogaon', 80, 80, 80, 70, districtData?['Naogaon']);
+    _drawDistrict(canvas, 'Bogura', 170, 120, 70, 80, districtData?['Bogura']);
+    _drawDistrict(
+      canvas,
+      'Nawabganj',
+      30,
+      160,
+      80,
+      90,
+      districtData?['Nawabganj'],
+    );
+    _drawDistrict(
+      canvas,
+      'Rajshahi',
+      60,
+      240,
+      90,
+      60,
+      districtData?['Rajshahi'],
+    );
+    _drawDistrict(canvas, 'Natore', 140, 220, 80, 70, districtData?['Natore']);
+    _drawDistrict(
+      canvas,
+      'Sirajganj',
+      200,
+      200,
+      80,
+      80,
+      districtData?['Sirajganj'],
+    );
+    _drawDistrict(canvas, 'Pabna', 150, 300, 80, 80, districtData?['Pabna']);
+
+    // Restore canvas state
+    canvas.restore();
+  }
+
+  void _drawRajshahiDivisionShape(
+    Canvas canvas,
+    double mapWidth,
+    double mapHeight,
+  ) {
+    // Use the actual RajshahiPainter to draw the real Rajshahi division shape
+    final rajshahiPainter = RajshahiPainter(
+      color: Colors.orange[600]!, // From division map
+      strokeColor: Colors.black,
+      strokeWidth: 3.0, // Thicker border for better visibility
+      showDistrictBorder: false,
+    );
+
+    // Draw the actual Rajshahi division shape
+    rajshahiPainter.paint(canvas, Size(mapWidth, mapHeight));
+  }
+
   void _drawDistrict(
     Canvas canvas,
     String name,
@@ -880,7 +980,9 @@ class BangladeshMapPainter extends CustomPainter {
     double pHeight,
   ) {
     // Don't draw division names when Dhaka is selected (showing detailed district map)
-    if (selectedDivision == 'Dhaka' || selectedDivision == 'Rangpur') {
+    if (selectedDivision == 'Dhaka' ||
+        selectedDivision == 'Rangpur' ||
+        selectedDivision == 'Rajshahi') {
       return;
     }
 
@@ -1011,7 +1113,9 @@ class BangladeshMapPainter extends CustomPainter {
     double pHeight,
   ) {
     // Don't draw division data when Dhaka is selected (showing detailed district map)
-    if (selectedDivision == 'Dhaka' || selectedDivision == 'Rangpur') {
+    if (selectedDivision == 'Dhaka' ||
+        selectedDivision == 'Rangpur' ||
+        selectedDivision == 'Rajshahi') {
       return;
     }
 

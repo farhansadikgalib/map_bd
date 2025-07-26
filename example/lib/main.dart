@@ -46,6 +46,14 @@ class _MyAppState extends State<MyApp> {
     'Panchagarh': 'Tea Gardens',
     'Thakurgaon': 'Sugar Mill',
     'Lalmonirhat': 'Railway Junction',
+    'Bogura': 'Yogurt',
+    'Joypurhat': 'Sugar Mill',
+    'Naogaon': 'Paddy',
+    'Natore': 'Kachagolla',
+    'Nawabganj': 'Mango',
+    'Pabna': 'Mental Hospital',
+    'Rajshahi': 'Silk City',
+    'Sirajganj': 'Handloom',
   };
 
   @override
@@ -62,11 +70,6 @@ class _MyAppState extends State<MyApp> {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('বাংলাদেশের মানচিত্র / Bangladesh Map'),
-          backgroundColor: Colors.green[700],
-          centerTitle: true,
-        ),
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
