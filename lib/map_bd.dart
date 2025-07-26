@@ -5,11 +5,15 @@ import 'map/divisions/division.dart';
 class MapBD extends StatefulWidget {
   const MapBD({
     super.key,
+    this.width = 360.59,
+    this.height = 500,
     this.divisionData,
     this.showData = true,
     this.dataTextStyle,
   });
 
+  final double width;
+  final double height;
   final Map<String, String>? divisionData;
   final bool showData;
   final TextStyle? dataTextStyle;
@@ -24,8 +28,8 @@ class _MapBDState extends State<MapBD> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 360.59,
-      height: 500,
+      width: widget.width,
+      height: widget.height,
       child: Stack(
         children: [
           CustomPaint(
@@ -63,10 +67,10 @@ class _MapBDState extends State<MapBD> {
 
     return divisions.map((division) {
       final name = division['name'] as String;
-      final x = (division['x'] as double) / pWidth * 360.59;
-      final y = (division['y'] as double) / pHeight * 500;
-      final width = (division['width'] as double) / pWidth * 360.59;
-      final height = (division['height'] as double) / pHeight * 500;
+      final x = (division['x'] as double) / pWidth * widget.width;
+      final y = (division['y'] as double) / pHeight * widget.height;
+      final width = (division['width'] as double) / pWidth * widget.width;
+      final height = (division['height'] as double) / pHeight * widget.height;
 
       return Positioned(
         left: x - width / 2,
@@ -181,44 +185,160 @@ class BangladeshMapPainter extends CustomPainter {
 
     final division = divisionMap[selectedDivision];
     if (division != null) {
-      // Save canvas state
-      canvas.save();
-      
-      // Calculate scale to fit the division to full screen
-      final originalWidth = (division['width'] as double) / pWidth * size.width;
-      final originalHeight = (division['height'] as double) / pHeight * size.height;
-      
-      final scaleX = size.width / originalWidth;
-      final scaleY = size.height / originalHeight;
-      final scale = math.min(scaleX, scaleY) * 0.8; // 80% of full size for some margin
-      
-      // Center the division
-      final scaledWidth = originalWidth * scale;
-      final scaledHeight = originalHeight * scale;
-      final centerX = (size.width - scaledWidth) / 2;
-      final centerY = (size.height - scaledHeight) / 2;
-      
-      // Translate to center
-      canvas.translate(centerX, centerY);
-      
-      // Scale the division
-      canvas.scale(scale);
-      
-      // Create a custom painter with the specified color
-      final coloredPainter = _ColoredDivisionPainter(
-        division['painter'] as CustomPainter, 
-        division['color'] as Color
-      );
-      
-      // Draw the division at full size
-      coloredPainter.paint(
-        canvas, 
-        Size(originalWidth, originalHeight)
-      );
-      
-      // Restore canvas state
-      canvas.restore();
+      // Special handling for Dhaka division - show detailed district map
+      if (selectedDivision == 'Dhaka') {
+        _drawDhakaDetailedMap(canvas, size);
+      } else {
+        // Save canvas state
+        canvas.save();
+        
+        // Calculate scale to fit the division to full screen
+        final originalWidth = (division['width'] as double) / pWidth * size.width;
+        final originalHeight = (division['height'] as double) / pHeight * size.height;
+        
+        final scaleX = size.width / originalWidth;
+        final scaleY = size.height / originalHeight;
+        final scale = math.min(scaleX, scaleY) * 0.8; // 80% of full size for some margin
+        
+        // Center the division
+        final scaledWidth = originalWidth * scale;
+        final scaledHeight = originalHeight * scale;
+        final centerX = (size.width - scaledWidth) / 2;
+        final centerY = (size.height - scaledHeight) / 2;
+        
+        // Translate to center
+        canvas.translate(centerX, centerY);
+        
+        // Scale the division
+        canvas.scale(scale);
+        
+        // Create a custom painter with the specified color
+        final coloredPainter = _ColoredDivisionPainter(
+          division['painter'] as CustomPainter, 
+          division['color'] as Color
+        );
+        
+        // Draw the division at full size
+        coloredPainter.paint(
+          canvas, 
+          Size(originalWidth, originalHeight)
+        );
+        
+        // Restore canvas state
+        canvas.restore();
+      }
     }
+  }
+
+  void _drawDhakaDetailedMap(Canvas canvas, Size size) {
+    // Calculate scaling to fit the map in the available space
+    final mapWidth = 300.0;
+    final mapHeight = 400.0;
+    final scaleX = size.width / mapWidth;
+    final scaleY = size.height / mapHeight;
+    final scale = math.min(scaleX, scaleY) * 0.9;
+
+    // Center the map
+    final scaledWidth = mapWidth * scale;
+    final scaledHeight = mapHeight * scale;
+    final centerX = (size.width - scaledWidth) / 2;
+    final centerY = (size.height - scaledHeight) / 2;
+
+    // Save canvas state
+    canvas.save();
+    
+    // Translate to center
+    canvas.translate(centerX, centerY);
+    
+    // Scale the map
+    canvas.scale(scale);
+
+    // Draw background
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, mapWidth, mapHeight),
+      Paint()..color = Colors.white
+    );
+
+    // Draw title at the top
+    final titleSpan = TextSpan(
+      text: 'DHAKA MAP',
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+    final titlePainter = TextPainter(
+      text: titleSpan,
+      textDirection: TextDirection.ltr,
+    );
+    titlePainter.layout();
+    titlePainter.paint(canvas, Offset(10, 10));
+
+    // Draw the actual Dhaka division shape as background
+    canvas.save();
+    canvas.translate(15, 40); // Position the division shape
+    _drawDhakaDivisionShape(canvas, mapWidth - 30, mapHeight - 55);
+    canvas.restore();
+
+    // Draw districts with more realistic shapes
+_drawDistrict(canvas, 'Tangail', 60, 50, 70, 50);
+_drawDistrict(canvas, 'Gazipur', 140, 60, 60, 40);
+_drawDistrict(canvas, 'Kishoreganj', 210, 40, 50, 35);
+_drawDistrict(canvas, 'Narsingdi', 190, 90, 45, 30);
+_drawDistrict(canvas, 'Manikganj', 40, 120, 55, 40);
+_drawDistrict(canvas, 'Dhaka', 120, 120, 55, 45);
+_drawDistrict(canvas, 'Narayanganj', 185, 130, 45, 35);
+_drawDistrict(canvas, 'Munshiganj', 150, 170, 50, 30);
+_drawDistrict(canvas, 'Rajbari', 30, 180, 40, 35);
+_drawDistrict(canvas, 'Faridpur', 50, 230, 55, 40);
+_drawDistrict(canvas, 'Madaripur', 35, 280, 45, 35);
+_drawDistrict(canvas, 'Shariatpur', 100, 230, 50, 30);
+_drawDistrict(canvas, 'Gopalganj', 55, 320, 55, 40);
+    // Restore canvas state
+    canvas.restore();
+  }
+
+  void _drawDhakaDivisionShape(Canvas canvas, double mapWidth, double mapHeight) {
+    // Use the actual DhakaPainter to draw the real Dhaka division shape
+    final dhakaPainter = DhakaPainter(
+      color: Colors.green[600]!, // Same green as main Bangladesh map
+      strokeColor: Colors.black,
+      strokeWidth: 3.0, // Thicker border for better visibility
+      showDistrictBorder: false,
+    );
+    
+    // Draw the actual Dhaka division shape
+    dhakaPainter.paint(canvas, Size(mapWidth, mapHeight));
+  }
+
+  void _drawDistrict(Canvas canvas, String name, double x, double y, double width, double height) {
+    // No district background - removed colored rectangles
+
+    // Draw district name only
+    final nameSpan = TextSpan(
+      text: name,
+      style: TextStyle(
+        color: Colors.black, // Black text on green background
+        fontSize: 10,
+        fontWeight: FontWeight.bold,
+        // No shadows - clean appearance
+      ),
+    );
+    
+    final namePainter = TextPainter(
+      text: nameSpan,
+      textDirection: TextDirection.ltr,
+      textAlign: TextAlign.center,
+    );
+    
+    namePainter.layout();
+    
+    // Center text in district area
+    final textX = x + (width - namePainter.width) / 2;
+    final textY = y + (height - namePainter.height) / 2;
+    
+    namePainter.paint(canvas, Offset(textX, textY));
   }
 
   void _drawAllDivisions(Canvas canvas, Size size, double pWidth, double pHeight) {
@@ -299,6 +419,11 @@ class BangladeshMapPainter extends CustomPainter {
   }
 
   void _drawDivisionNames(Canvas canvas, Size size, double pWidth, double pHeight) {
+    // Don't draw division names when Dhaka is selected (showing detailed district map)
+    if (selectedDivision == 'Dhaka') {
+      return;
+    }
+
     final divisions = [
       {'name': 'Rangpur', 'x': 6.2 + 139.23/2, 'y': 3.12 + 132.73/2},
       {'name': 'Rajshahi', 'x': 1.76 + 138.64/2, 'y': 114.89 + 120.51/2},
@@ -419,6 +544,11 @@ class BangladeshMapPainter extends CustomPainter {
   }
 
   void _drawDivisionData(Canvas canvas, Size size, double pWidth, double pHeight) {
+    // Don't draw division data when Dhaka is selected (showing detailed district map)
+    if (selectedDivision == 'Dhaka') {
+      return;
+    }
+
     final divisions = [
       {'name': 'Rangpur', 'x': 6.2 + 139.23/2, 'y': 3.12 + 132.73/2},
       {'name': 'Rajshahi', 'x': 1.76 + 138.64/2, 'y': 114.89 + 120.51/2},
