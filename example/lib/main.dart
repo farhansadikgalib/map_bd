@@ -25,6 +25,29 @@ class _MyAppState extends State<MyApp> {
     'Mymensingh': 'Education',
   };
 
+  final Map<String, String> districtData = {
+    'Dhaka': 'Capital',
+    'Gazipur': 'City Corporation',
+    'Narayanganj': 'Port City',
+    'Tangail': 'Tangaile Sari',
+    'Kishoreganj': 'President\'s Home',
+    'Manikganj': 'Ferry Ghat',
+    'Munshiganj': 'Famous for Ilish',
+    'Rajbari': 'Rajbari Rajbari',
+    'Faridpur': 'River Port',
+    'Madaripur': 'Famous for Dates',
+    'Shariatpur': 'Famous for Sweets',
+    'Gopalganj': 'Bangabandhu\'s Home',
+    'Rangpur': 'Main City',
+    'Dinajpur': 'Litchi',
+    'Kurigram': 'Riverine District',
+    'Gaibandha': 'Charland',
+    'Nilphamari': 'Indigo Cultivation',
+    'Panchagarh': 'Tea Gardens',
+    'Thakurgaon': 'Sugar Mill',
+    'Lalmonirhat': 'Railway Junction',
+  };
+
   @override
   void initState() {
     super.initState();
@@ -49,10 +72,7 @@ class _MyAppState extends State<MyApp> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Colors.blue[50]!,
-                Colors.green[50]!,
-              ],
+              colors: [Colors.blue[50]!, Colors.green[50]!],
             ),
           ),
           child: Center(
@@ -74,6 +94,7 @@ class _MyAppState extends State<MyApp> {
                   ),
                   child: MapBD(
                     divisionData: divisionData,
+                    districtData: districtData,
                     showData: true,
                     dataTextStyle: const TextStyle(
                       color: Colors.white,
@@ -82,7 +103,6 @@ class _MyAppState extends State<MyApp> {
                     ),
                   ),
                 ),
-
               ],
             ),
           ),
