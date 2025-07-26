@@ -62,6 +62,12 @@ class _MyAppState extends State<MyApp> {
     'Sunamganj': 'Haor',
     'Habiganj': 'Gas Field',
     'Moulvibazar': 'Madhabkunda Waterfall',
+    'Barishal': 'Guava',
+    'Patuakhali': 'Kuakata',
+    'Bhola': 'Island',
+    'Pirojpur': 'Floating Market',
+    'Barguna': 'Betel Leaf',
+    'Jhalokati': 'Hog Plum',
   };
 
   @override

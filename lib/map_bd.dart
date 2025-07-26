@@ -310,6 +310,8 @@ class BangladeshMapPainter extends CustomPainter {
         _drawMymensinghDetailedMap(canvas, size);
       } else if (selectedDivision == 'Sylhet') {
         _drawSylhetDetailedMap(canvas, size);
+      } else if (selectedDivision == 'Barishal') {
+        _drawBarishalDetailedMap(canvas, size);
       } else {
         // Save canvas state
         canvas.save();
@@ -912,6 +914,110 @@ class BangladeshMapPainter extends CustomPainter {
     sylhetPainter.paint(canvas, Size(mapWidth, mapHeight));
   }
 
+  void _drawBarishalDetailedMap(Canvas canvas, Size size) {
+    // Calculate scaling to fit the map in the available space
+    final mapWidth = 300.0;
+    final mapHeight = 400.0;
+    final scaleX = size.width / mapWidth;
+    final scaleY = size.height / mapHeight;
+    final scale = math.min(scaleX, scaleY) * 0.9;
+
+    // Center the map
+    final scaledWidth = mapWidth * scale;
+    final scaledHeight = mapHeight * scale;
+    final centerX = (size.width - scaledWidth) / 2;
+    final centerY = (size.height - scaledHeight) / 2;
+
+    // Save canvas state
+    canvas.save();
+
+    // Translate to center
+    canvas.translate(centerX, centerY);
+
+    // Scale the map
+    canvas.scale(scale);
+
+    // Draw background
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, mapWidth, mapHeight),
+      Paint()..color = Colors.white,
+    );
+
+    // Draw the actual Barishal division shape as background
+    canvas.save();
+    canvas.translate(15, 40); // Position the division shape
+    _drawBarishalDivisionShape(canvas, mapWidth - 30, mapHeight - 55);
+    canvas.restore();
+
+    // Draw districts for Barishal
+    _drawDistrict(
+      canvas,
+      'Barishal',
+      100,
+      50,
+      120,
+      100,
+      districtData?['Barishal'],
+    );
+    _drawDistrict(
+      canvas,
+      'Pirojpur',
+      40,
+      120,
+      80,
+      150,
+      districtData?['Pirojpur'],
+    );
+    _drawDistrict(
+      canvas,
+      'Jhalokati',
+      100,
+      160,
+      60,
+      100,
+      districtData?['Jhalokati'],
+    );
+    _drawDistrict(
+      canvas,
+      'Patuakhali',
+      150,
+      200,
+      120,
+      150,
+      districtData?['Patuakhali'],
+    );
+    _drawDistrict(
+      canvas,
+      'Barguna',
+      100,
+      280,
+      80,
+      100,
+      districtData?['Barguna'],
+    );
+    _drawDistrict(canvas, 'Bhola', 240, 180, 50, 180, districtData?['Bhola']);
+
+    // Restore canvas state
+    canvas.restore();
+  }
+
+  void _drawBarishalDivisionShape(
+    Canvas canvas,
+    double mapWidth,
+    double mapHeight,
+  ) {
+    // Use the actual BarisalPainter to draw the real Barishal division shape
+    final barisalPainter = BarisalPainter(
+      color: Colors.teal[600]!, // From division map
+      strokeColor: Colors.black,
+      strokeWidth: 3.0, // Thicker border for better visibility
+      showDistrictBorder: false,
+    );
+
+    // Draw the actual Barishal division shape
+    barisalPainter.paint(canvas, Size(mapWidth, mapHeight));
+  }
+
   void _drawDistrict(
     Canvas canvas,
     String name,
@@ -1160,7 +1266,8 @@ class BangladeshMapPainter extends CustomPainter {
         selectedDivision == 'Rangpur' ||
         selectedDivision == 'Rajshahi' ||
         selectedDivision == 'Mymensingh' ||
-        selectedDivision == 'Sylhet') {
+        selectedDivision == 'Sylhet' ||
+        selectedDivision == 'Barishal') {
       return;
     }
 
@@ -1295,7 +1402,8 @@ class BangladeshMapPainter extends CustomPainter {
         selectedDivision == 'Rangpur' ||
         selectedDivision == 'Rajshahi' ||
         selectedDivision == 'Mymensingh' ||
-        selectedDivision == 'Sylhet') {
+        selectedDivision == 'Sylhet' ||
+        selectedDivision == 'Barishal') {
       return;
     }
 
