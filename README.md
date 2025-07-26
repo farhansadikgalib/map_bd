@@ -1,32 +1,34 @@
 # Map BD - Interactive Bangladesh Map Flutter Package
 
-A beautiful, interactive Flutter package that displays a detailed map of Bangladesh with all 8 administrative divisions. This package provides a customizable, interactive map experience perfect for educational apps, tourism applications, data visualization, and geographic learning.
+A beautiful, interactive Flutter package that displays a detailed map of Bangladesh with all 8 administrative divisions and their respective districts. This package provides a customizable, interactive map experience perfect for educational apps, tourism applications, data visualization, and geographic learning.
 
 ## 🌟 Features
 
 ### 🗺️ **Interactive Map Display**
-- **8 Administrative Divisions**: Rangpur, Rajshahi, Khulna, Chattogram, Sylhet, Dhaka, Mymensingh, and Barishal
-- **Custom Painted Graphics**: High-quality vector graphics using Flutter's CustomPainter
-- **Accurate Geographic Representation**: Based on official Bangladesh administrative boundaries
-- **Color-coded Divisions**: Each division has a distinct color for easy identification
+- **8 Administrative Divisions**: Rangpur, Rajshahi, Khulna, Chattogram, Sylhet, Dhaka, Mymensingh, and Barishal.
+- **Detailed District Views**: Click on a division to see a detailed map of its districts.
+- **Custom Painted Graphics**: High-quality vector graphics using Flutter's CustomPainter.
+- **Accurate Geographic Representation**: Based on official Bangladesh administrative boundaries.
+- **Color-coded Divisions**: Each division has a distinct color for easy identification.
 
 ### 🎯 **Interactive Functionality**
-- **Click to Focus**: Tap any division to view it in full-screen mode
-- **Centered Display**: Selected divisions are centered and scaled to fit the screen
-- **Back Navigation**: Easy return to full map view with a stylish back button
-- **Smooth Transitions**: Immediate visual feedback for user interactions
+- **Click to Focus**: Tap any division to view its detailed district map.
+- **Centered Display**: Selected divisions are centered and scaled to fit the screen.
+- **Back Navigation**: Easy return to full map view with a stylish back button.
+- **Smooth Transitions**: Immediate visual feedback for user interactions.
 
 ### 📊 **Custom Data Support**
-- **Division-specific Data**: Display custom string data for each division
-- **Flexible Styling**: Customizable text styles for data display
-- **Dynamic Content**: Show/hide data as needed
-- **Positioned Text**: Smart text positioning that adapts to full-screen mode
+- **Division-specific Data**: Display custom string data for each division.
+- **District-specific Data**: Display custom string data for each district in the detailed view.
+- **Flexible Styling**: Customizable text styles for data display.
+- **Dynamic Content**: Show/hide data as needed.
+- **Positioned Text**: Smart text positioning that adapts to the view.
 
 ### 🎨 **Visual Customization**
-- **Clean Text Display**: Division names and data without background clutter
-- **Responsive Design**: Adapts to different screen sizes
-- **Professional Appearance**: Modern, minimalist interface
-- **Accessible Colors**: High contrast for readability
+- **Clean Text Display**: Division and district names and data without background clutter.
+- **Responsive Design**: Adapts to different screen sizes.
+- **Professional Appearance**: Modern, minimalist interface.
+- **Accessible Colors**: High contrast for readability.
 
 ## 📦 Installation
 
@@ -53,7 +55,7 @@ class MyApp extends StatelessWidget {
         body: Center(
           child: MapBD(
             width: 360.59,
-            height: 400,
+            height: 500,
           ),
         ),
       ),
@@ -67,16 +69,16 @@ class MyApp extends StatelessWidget {
 ```dart
 MapBD(
   width: 360.59,
-  height: 400,
+  height: 500,
   divisionData: {
     'Dhaka': 'Capital City',
     'Chattogram': 'Port City',
-    'Sylhet': 'Tea Gardens',
-    'Rangpur': 'Agriculture Hub',
-    'Rajshahi': 'Silk City',
-    'Khulna': 'Mangrove Forest',
-    'Mymensingh': 'Education Center',
-    'Barishal': 'River Port',
+    // ... and so on for other divisions
+  },
+  districtData: {
+    'Dhaka': 'Capital',
+    'Gazipur': 'City Corporation',
+    // ... and so on for other districts
   },
   showData: true,
   dataTextStyle: TextStyle(
@@ -94,9 +96,10 @@ MapBD(
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `width` | `double` | `360.59` | Width of the map widget |
-| `height` | `double` | `400` | Height of the map widget |
+| `height` | `double` | `500` | Height of the map widget |
 | `divisionData` | `Map<String, String>?` | `null` | Custom data for each division |
-| `showData` | `bool` | `false` | Whether to display division data |
+| `districtData` | `Map<String, String>?` | `null` | Custom data for each district |
+| `showData` | `bool` | `true` | Whether to display division and district data |
 | `dataTextStyle` | `TextStyle?` | `null` | Custom style for data text |
 
 ### Division Names
@@ -112,94 +115,47 @@ The package supports all 8 administrative divisions of Bangladesh:
 
 ## 🎮 Interactive Features
 
-### Full-Screen Mode
+### Detailed District View
 When a division is clicked:
-- The selected division is displayed in full-screen
-- Text and data are centered and enlarged
-- Other divisions are hidden
-- A back button appears for navigation
+- The selected division's districts are displayed in a detailed map.
+- Text and data are centered and enlarged.
+- Other divisions are hidden.
+- A back button appears for navigation.
 
 ### Back Navigation
-- Click the back button to return to full map view
-- All divisions become visible again
-- Text returns to original positioning
-
-## 🎨 Customization Examples
-
-### Custom Colors and Styling
-```dart
-MapBD(
-  width: 400,
-  height: 450,
-  divisionData: {
-    'Dhaka': 'Population: 21.7M',
-    'Chattogram': 'Port: Chittagong',
-  },
-  showData: true,
-  dataTextStyle: TextStyle(
-    color: Colors.yellow,
-    fontSize: 12,
-    fontWeight: FontWeight.bold,
-    shadows: [
-      Shadow(
-        offset: Offset(1, 1),
-        blurRadius: 2,
-        color: Colors.black,
-      ),
-    ],
-  ),
-)
-```
-
-### Educational App Integration
-```dart
-MapBD(
-  width: 300,
-  height: 350,
-  divisionData: {
-    'Dhaka': 'Capital & Largest City',
-    'Sylhet': 'Famous for Tea Gardens',
-    'Chattogram': 'Major Seaport',
-    'Rangpur': 'Agricultural Region',
-  },
-  showData: true,
-)
-```
+- Click the back button to return to the full map view.
+- All divisions become visible again.
+- Text returns to its original positioning.
 
 ## 🏗️ Architecture
 
 ### Core Components
-- **MapBD Widget**: Main widget that manages state and interactions
-- **BangladeshMapPainter**: CustomPainter for rendering the map
-- **Division Painters**: Individual CustomPainter classes for each division
-- **Interactive Areas**: GestureDetector widgets for click handling
+- **MapBD Widget**: Main widget that manages state and interactions.
+- **BangladeshMapPainter**: CustomPainter for rendering the map.
+- **Division and District Painters**: Individual CustomPainter classes for each division and logic for drawing districts.
+- **Interactive Areas**: GestureDetector widgets for click handling.
 
 ### State Management
-- **StatefulWidget**: Manages selected division state
-- **Conditional Rendering**: Shows/hides elements based on selection
-- **Dynamic Positioning**: Adjusts text and data positioning for different views
+- **StatefulWidget**: Manages selected division state.
+- **Conditional Rendering**: Shows/hides elements based on selection.
+- **Dynamic Positioning**: Adjusts text and data positioning for different views.
 
 ## 🎯 Use Cases
 
 ### Educational Applications
-- **Geography Learning**: Interactive exploration of Bangladesh's divisions
-- **History Lessons**: Display historical information for each region
-- **Cultural Studies**: Show cultural data and traditions
+- **Geography Learning**: Interactive exploration of Bangladesh's divisions and districts.
+- **History Lessons**: Display historical information for each region.
+- **Cultural Studies**: Show cultural data and traditions.
 
 ### Tourism Apps
-- **Travel Planning**: Highlight tourist destinations
-- **Regional Information**: Display local attractions and facts
-- **Interactive Guides**: Click to learn about specific regions
+- **Travel Planning**: Highlight tourist destinations.
+- **Regional Information**: Display local attractions and facts.
+- **Interactive Guides**: Click to learn about specific regions.
 
 ### Data Visualization
-- **Demographic Data**: Show population statistics
+- **Demographic Data**: Show population statistics.
 - **Economic Information**: Display GDP, industries, etc.
-- **Environmental Data**: Show climate, geography information
-
-### Business Applications
-- **Regional Analysis**: Display business metrics by division
-- **Market Research**: Show demographic and economic data
-- **Service Coverage**: Highlight service areas
+- **Environmental Data**: Show climate, geography information.
 
 ## 🔧 Technical Details
 
@@ -209,14 +165,14 @@ MapBD(
 - **dart:math**: For mathematical calculations
 
 ### Performance
-- **Optimized Rendering**: Efficient canvas operations
-- **Minimal Memory Usage**: Lightweight implementation
-- **Smooth Interactions**: Responsive user experience
+- **Optimized Rendering**: Efficient canvas operations.
+- **Minimal Memory Usage**: Lightweight implementation.
+- **Smooth Interactions**: Responsive user experience.
 
 ### Platform Support
 - **Android**: Full support
 - **iOS**: Full support
-- **Web**: Limited support (method channels not available)
+- **Web**: Full support
 - **Desktop**: Full support
 
 ## 🤝 Contributing
@@ -235,9 +191,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- Geographic data based on official Bangladesh administrative boundaries
-- Inspired by educational and interactive map applications
-- Built with Flutter's powerful CustomPainter capabilities
+- Geographic data based on official Bangladesh administrative boundaries.
+- Inspired by educational and interactive map applications.
+- Built with Flutter's powerful CustomPainter capabilities.
 
 ## 📞 Support
 
