@@ -306,6 +306,10 @@ class BangladeshMapPainter extends CustomPainter {
         _drawRangpurDetailedMap(canvas, size);
       } else if (selectedDivision == 'Rajshahi') {
         _drawRajshahiDetailedMap(canvas, size);
+      } else if (selectedDivision == 'Mymensingh') {
+        _drawMymensinghDetailedMap(canvas, size);
+      } else if (selectedDivision == 'Sylhet') {
+        _drawSylhetDetailedMap(canvas, size);
       } else {
         // Save canvas state
         canvas.save();
@@ -736,6 +740,178 @@ class BangladeshMapPainter extends CustomPainter {
     rajshahiPainter.paint(canvas, Size(mapWidth, mapHeight));
   }
 
+  void _drawMymensinghDetailedMap(Canvas canvas, Size size) {
+    // Calculate scaling to fit the map in the available space
+    final mapWidth = 300.0;
+    final mapHeight = 400.0;
+    final scaleX = size.width / mapWidth;
+    final scaleY = size.height / mapHeight;
+    final scale = math.min(scaleX, scaleY) * 0.9;
+
+    // Center the map
+    final scaledWidth = mapWidth * scale;
+    final scaledHeight = mapHeight * scale;
+    final centerX = (size.width - scaledWidth) / 2;
+    final centerY = (size.height - scaledHeight) / 2;
+
+    // Save canvas state
+    canvas.save();
+
+    // Translate to center
+    canvas.translate(centerX, centerY);
+
+    // Scale the map
+    canvas.scale(scale);
+
+    // Draw background
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, mapWidth, mapHeight),
+      Paint()..color = Colors.white,
+    );
+
+    // Draw the actual Mymensingh division shape as background
+    canvas.save();
+    canvas.translate(15, 40); // Position the division shape
+    _drawMymensinghDivisionShape(canvas, mapWidth - 30, mapHeight - 55);
+    canvas.restore();
+
+    // Draw districts for Mymensingh
+    _drawDistrict(
+      canvas,
+      'Jamalpur',
+      40,
+      80,
+      80,
+      180,
+      districtData?['Jamalpur'],
+    );
+    _drawDistrict(canvas, 'Sherpur', 90, 50, 90, 80, districtData?['Sherpur']);
+    _drawDistrict(
+      canvas,
+      'Mymensingh',
+      90,
+      180,
+      100,
+      150,
+      districtData?['Mymensingh'],
+    );
+    _drawDistrict(
+      canvas,
+      'Netrokona',
+      180,
+      100,
+      100,
+      120,
+      districtData?['Netrokona'],
+    );
+
+    // Restore canvas state
+    canvas.restore();
+  }
+
+  void _drawMymensinghDivisionShape(
+    Canvas canvas,
+    double mapWidth,
+    double mapHeight,
+  ) {
+    // Use the actual MymensinghPainter to draw the real Mymensingh division shape
+    final mymensinghPainter = MymensinghPainter(
+      color: Colors.lime[600]!, // From division map
+      strokeColor: Colors.black,
+      strokeWidth: 3.0, // Thicker border for better visibility
+      showDistrictBorder: false,
+    );
+
+    // Draw the actual Mymensingh division shape
+    mymensinghPainter.paint(canvas, Size(mapWidth, mapHeight));
+  }
+
+  void _drawSylhetDetailedMap(Canvas canvas, Size size) {
+    // Calculate scaling to fit the map in the available space
+    final mapWidth = 300.0;
+    final mapHeight = 400.0;
+    final scaleX = size.width / mapWidth;
+    final scaleY = size.height / mapHeight;
+    final scale = math.min(scaleX, scaleY) * 0.9;
+
+    // Center the map
+    final scaledWidth = mapWidth * scale;
+    final scaledHeight = mapHeight * scale;
+    final centerX = (size.width - scaledWidth) / 2;
+    final centerY = (size.height - scaledHeight) / 2;
+
+    // Save canvas state
+    canvas.save();
+
+    // Translate to center
+    canvas.translate(centerX, centerY);
+
+    // Scale the map
+    canvas.scale(scale);
+
+    // Draw background
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, mapWidth, mapHeight),
+      Paint()..color = Colors.white,
+    );
+
+    // Draw the actual Sylhet division shape as background
+    canvas.save();
+    canvas.translate(15, 40); // Position the division shape
+    _drawSylhetDivisionShape(canvas, mapWidth - 30, mapHeight - 55);
+    canvas.restore();
+
+    // Draw districts for Sylhet
+    _drawDistrict(
+      canvas,
+      'Sunamganj',
+      50,
+      60,
+      120,
+      150,
+      districtData?['Sunamganj'],
+    );
+    _drawDistrict(canvas, 'Sylhet', 160, 60, 120, 150, districtData?['Sylhet']);
+    _drawDistrict(
+      canvas,
+      'Habiganj',
+      50,
+      220,
+      120,
+      150,
+      districtData?['Habiganj'],
+    );
+    _drawDistrict(
+      canvas,
+      'Moulvibazar',
+      160,
+      220,
+      120,
+      150,
+      districtData?['Moulvibazar'],
+    );
+
+    // Restore canvas state
+    canvas.restore();
+  }
+
+  void _drawSylhetDivisionShape(
+    Canvas canvas,
+    double mapWidth,
+    double mapHeight,
+  ) {
+    // Use the actual SylhetPainter to draw the real Sylhet division shape
+    final sylhetPainter = SylhetPainter(
+      color: Colors.indigo[600]!, // From division map
+      strokeColor: Colors.black,
+      strokeWidth: 3.0, // Thicker border for better visibility
+      showDistrictBorder: false,
+    );
+
+    // Draw the actual Sylhet division shape
+    sylhetPainter.paint(canvas, Size(mapWidth, mapHeight));
+  }
+
   void _drawDistrict(
     Canvas canvas,
     String name,
@@ -982,7 +1158,9 @@ class BangladeshMapPainter extends CustomPainter {
     // Don't draw division names when Dhaka is selected (showing detailed district map)
     if (selectedDivision == 'Dhaka' ||
         selectedDivision == 'Rangpur' ||
-        selectedDivision == 'Rajshahi') {
+        selectedDivision == 'Rajshahi' ||
+        selectedDivision == 'Mymensingh' ||
+        selectedDivision == 'Sylhet') {
       return;
     }
 
@@ -1115,7 +1293,9 @@ class BangladeshMapPainter extends CustomPainter {
     // Don't draw division data when Dhaka is selected (showing detailed district map)
     if (selectedDivision == 'Dhaka' ||
         selectedDivision == 'Rangpur' ||
-        selectedDivision == 'Rajshahi') {
+        selectedDivision == 'Rajshahi' ||
+        selectedDivision == 'Mymensingh' ||
+        selectedDivision == 'Sylhet') {
       return;
     }
 

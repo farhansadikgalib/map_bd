@@ -54,6 +54,14 @@ class _MyAppState extends State<MyApp> {
     'Pabna': 'Mental Hospital',
     'Rajshahi': 'Silk City',
     'Sirajganj': 'Handloom',
+    'Jamalpur': 'Nakshi Kantha',
+    'Mymensingh': 'Education Hub',
+    'Netrokona': 'Birishiri',
+    'Sherpur': 'Garo Hills',
+    'Sylhet': 'Tea Gardens',
+    'Sunamganj': 'Haor',
+    'Habiganj': 'Gas Field',
+    'Moulvibazar': 'Madhabkunda Waterfall',
   };
 
   @override
