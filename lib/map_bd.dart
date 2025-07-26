@@ -312,6 +312,8 @@ class BangladeshMapPainter extends CustomPainter {
         _drawSylhetDetailedMap(canvas, size);
       } else if (selectedDivision == 'Barishal') {
         _drawBarishalDetailedMap(canvas, size);
+      } else if (selectedDivision == 'Chattogram') {
+        _drawChattogramDetailedMap(canvas, size);
       } else {
         // Save canvas state
         canvas.save();
@@ -1018,6 +1020,147 @@ class BangladeshMapPainter extends CustomPainter {
     barisalPainter.paint(canvas, Size(mapWidth, mapHeight));
   }
 
+  void _drawChattogramDetailedMap(Canvas canvas, Size size) {
+    // Calculate scaling to fit the map in the available space
+    final mapWidth = 300.0;
+    final mapHeight = 500.0; // Taller map for Chattogram
+    final scaleX = size.width / mapWidth;
+    final scaleY = size.height / mapHeight;
+    final scale = math.min(scaleX, scaleY) * 0.9;
+
+    // Center the map
+    final scaledWidth = mapWidth * scale;
+    final scaledHeight = mapHeight * scale;
+    final centerX = (size.width - scaledWidth) / 2;
+    final centerY = (size.height - scaledHeight) / 2;
+
+    // Save canvas state
+    canvas.save();
+
+    // Translate to center
+    canvas.translate(centerX, centerY);
+
+    // Scale the map
+    canvas.scale(scale);
+
+    // Draw background
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, mapWidth, mapHeight),
+      Paint()..color = Colors.white,
+    );
+
+    // Draw the actual Chattogram division shape as background
+    canvas.save();
+    canvas.translate(15, 40); // Position the division shape
+    _drawChattogramDivisionShape(canvas, mapWidth - 30, mapHeight - 55);
+    canvas.restore();
+
+    // Draw districts for Chattogram
+    _drawDistrict(
+      canvas,
+      "Brahmanbaria",
+      50,
+      50,
+      100,
+      80,
+      districtData?['Brahmanbaria'],
+    );
+    _drawDistrict(canvas, "Comilla", 70, 130, 80, 80, districtData?['Comilla']);
+    _drawDistrict(
+      canvas,
+      "Chandpur",
+      60,
+      220,
+      80,
+      70,
+      districtData?['Chandpur'],
+    );
+    _drawDistrict(
+      canvas,
+      "Lakshmipur",
+      50,
+      300,
+      90,
+      80,
+      districtData?['Lakshmipur'],
+    );
+    _drawDistrict(
+      canvas,
+      "Noakhali",
+      70,
+      380,
+      80,
+      80,
+      districtData?['Noakhali'],
+    );
+    _drawDistrict(canvas, "Feni", 150, 280, 60, 70, districtData?['Feni']);
+    _drawDistrict(
+      canvas,
+      "Khagrachhari",
+      180,
+      120,
+      100,
+      100,
+      districtData?['Khagrachhari'],
+    );
+    _drawDistrict(
+      canvas,
+      "Rangamati",
+      200,
+      220,
+      90,
+      120,
+      districtData?['Rangamati'],
+    );
+    _drawDistrict(
+      canvas,
+      "Chattogram",
+      160,
+      350,
+      100,
+      80,
+      districtData?['Chattogram'],
+    );
+    _drawDistrict(
+      canvas,
+      "Bandarban",
+      200,
+      430,
+      90,
+      100,
+      districtData?['Bandarban'],
+    );
+    _drawDistrict(
+      canvas,
+      "Cox's Bazar",
+      180,
+      530,
+      100,
+      80,
+      districtData?["Cox's Bazar"],
+    );
+
+    // Restore canvas state
+    canvas.restore();
+  }
+
+  void _drawChattogramDivisionShape(
+    Canvas canvas,
+    double mapWidth,
+    double mapHeight,
+  ) {
+    // Use the actual ChittagongPainter to draw the real Chattogram division shape
+    final chittagongPainter = ChittagongPainter(
+      color: Colors.blue[600]!, // From division map
+      strokeColor: Colors.black,
+      strokeWidth: 3.0, // Thicker border for better visibility
+      showDistrictBorder: false,
+    );
+
+    // Draw the actual Chattogram division shape
+    chittagongPainter.paint(canvas, Size(mapWidth, mapHeight));
+  }
+
   void _drawDistrict(
     Canvas canvas,
     String name,
@@ -1267,7 +1410,8 @@ class BangladeshMapPainter extends CustomPainter {
         selectedDivision == 'Rajshahi' ||
         selectedDivision == 'Mymensingh' ||
         selectedDivision == 'Sylhet' ||
-        selectedDivision == 'Barishal') {
+        selectedDivision == 'Barishal' ||
+        selectedDivision == 'Chattogram') {
       return;
     }
 
@@ -1403,7 +1547,8 @@ class BangladeshMapPainter extends CustomPainter {
         selectedDivision == 'Rajshahi' ||
         selectedDivision == 'Mymensingh' ||
         selectedDivision == 'Sylhet' ||
-        selectedDivision == 'Barishal') {
+        selectedDivision == 'Barishal' ||
+        selectedDivision == 'Chattogram') {
       return;
     }
 

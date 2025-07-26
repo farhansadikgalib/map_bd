@@ -68,6 +68,17 @@ class _MyAppState extends State<MyApp> {
     'Pirojpur': 'Floating Market',
     'Barguna': 'Betel Leaf',
     'Jhalokati': 'Hog Plum',
+    'Chattogram': 'Port City',
+    "Cox's Bazar": 'Beach',
+    'Rangamati': 'Lake',
+    'Bandarban': 'Hills',
+    'Khagrachhari': 'Cave',
+    'Feni': 'River',
+    'Lakshmipur': 'Coconut',
+    'Comilla': 'Rasmalai',
+    'Noakhali': 'Island',
+    'Brahmanbaria': 'Sweet',
+    'Chandpur': 'Hilsa',
   };
 
   @override
