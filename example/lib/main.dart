@@ -79,6 +79,16 @@ class _MyAppState extends State<MyApp> {
     'Noakhali': 'Island',
     'Brahmanbaria': 'Sweet',
     'Chandpur': 'Hilsa',
+    'Bagerhat': 'Sixty Dome Mosque',
+    'Chuadanga': 'Oldest Sugar Mill',
+    'Jessore': 'Benapole',
+    'Jhenaidah': 'Lalon Shah Bridge',
+    'Khulna': 'Sundarbans',
+    'Kushtia': 'Lalon Shah Mazar',
+    'Magura': 'Nakshi Kantha',
+    'Meherpur': 'Mujibnagar',
+    'Narail': 'S. M. Sultan Memorial',
+    'Satkhira': 'Sundarbans',
   };
 
   @override

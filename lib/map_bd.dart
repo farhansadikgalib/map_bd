@@ -314,6 +314,8 @@ class BangladeshMapPainter extends CustomPainter {
         _drawBarishalDetailedMap(canvas, size);
       } else if (selectedDivision == 'Chattogram') {
         _drawChattogramDetailedMap(canvas, size);
+      } else if (selectedDivision == 'Khulna') {
+        _drawKhulnaDetailedMap(canvas, size);
       } else {
         // Save canvas state
         canvas.save();
@@ -1161,6 +1163,122 @@ class BangladeshMapPainter extends CustomPainter {
     chittagongPainter.paint(canvas, Size(mapWidth, mapHeight));
   }
 
+  void _drawKhulnaDetailedMap(Canvas canvas, Size size) {
+    // Calculate scaling to fit the map in the available space
+    final mapWidth = 300.0;
+    final mapHeight = 500.0; // Taller map for Khulna
+    final scaleX = size.width / mapWidth;
+    final scaleY = size.height / mapHeight;
+    final scale = math.min(scaleX, scaleY) * 0.9;
+
+    // Center the map
+    final scaledWidth = mapWidth * scale;
+    final scaledHeight = mapHeight * scale;
+    final centerX = (size.width - scaledWidth) / 2;
+    final centerY = (size.height - scaledHeight) / 2;
+
+    // Save canvas state
+    canvas.save();
+
+    // Translate to center
+    canvas.translate(centerX, centerY);
+
+    // Scale the map
+    canvas.scale(scale);
+
+    // Draw background
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, mapWidth, mapHeight),
+      Paint()..color = Colors.white,
+    );
+
+    // Draw the actual Khulna division shape as background
+    canvas.save();
+    canvas.translate(15, 40); // Position the division shape
+    _drawKhulnaDivisionShape(canvas, mapWidth - 30, mapHeight - 55);
+    canvas.restore();
+
+    // Draw districts for Khulna
+    _drawDistrict(
+      canvas,
+      'Meherpur',
+      40,
+      60,
+      80,
+      70,
+      districtData?['Meherpur'],
+    );
+    _drawDistrict(canvas, 'Kushtia', 120, 50, 80, 70, districtData?['Kushtia']);
+    _drawDistrict(
+      canvas,
+      'Chuadanga',
+      40,
+      140,
+      80,
+      70,
+      districtData?['Chuadanga'],
+    );
+    _drawDistrict(
+      canvas,
+      'Jhenaidah',
+      110,
+      130,
+      80,
+      80,
+      districtData?['Jhenaidah'],
+    );
+    _drawDistrict(canvas, 'Magura', 190, 150, 70, 70, districtData?['Magura']);
+    _drawDistrict(
+      canvas,
+      'Jessore',
+      100,
+      220,
+      90,
+      80,
+      districtData?['Jessore'],
+    );
+    _drawDistrict(canvas, 'Narail', 190, 230, 60, 80, districtData?['Narail']);
+    _drawDistrict(
+      canvas,
+      'Satkhira',
+      70,
+      310,
+      80,
+      150,
+      districtData?['Satkhira'],
+    );
+    _drawDistrict(canvas, 'Khulna', 150, 310, 80, 150, districtData?['Khulna']);
+    _drawDistrict(
+      canvas,
+      'Bagerhat',
+      220,
+      310,
+      80,
+      150,
+      districtData?['Bagerhat'],
+    );
+
+    // Restore canvas state
+    canvas.restore();
+  }
+
+  void _drawKhulnaDivisionShape(
+    Canvas canvas,
+    double mapWidth,
+    double mapHeight,
+  ) {
+    // Use the actual KhulnaPainter to draw the real Khulna division shape
+    final khulnaPainter = KhulnaPainter(
+      color: Colors.purple[600]!, // From division map
+      strokeColor: Colors.black,
+      strokeWidth: 3.0, // Thicker border for better visibility
+      showDistrictBorder: false,
+    );
+
+    // Draw the actual Khulna division shape
+    khulnaPainter.paint(canvas, Size(mapWidth, mapHeight));
+  }
+
   void _drawDistrict(
     Canvas canvas,
     String name,
@@ -1411,7 +1529,8 @@ class BangladeshMapPainter extends CustomPainter {
         selectedDivision == 'Mymensingh' ||
         selectedDivision == 'Sylhet' ||
         selectedDivision == 'Barishal' ||
-        selectedDivision == 'Chattogram') {
+        selectedDivision == 'Chattogram' ||
+        selectedDivision == 'Khulna') {
       return;
     }
 
@@ -1548,7 +1667,8 @@ class BangladeshMapPainter extends CustomPainter {
         selectedDivision == 'Mymensingh' ||
         selectedDivision == 'Sylhet' ||
         selectedDivision == 'Barishal' ||
-        selectedDivision == 'Chattogram') {
+        selectedDivision == 'Chattogram' ||
+        selectedDivision == 'Khulna') {
       return;
     }
 
